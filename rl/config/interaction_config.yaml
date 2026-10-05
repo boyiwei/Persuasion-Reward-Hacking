@@ -1,0 +1,7 @@
+# verl multi-turn interaction registry. Referenced by
+# actor_rollout_ref.rollout.multi_turn.interaction_config_path. The `name` must match the
+# `interaction_kwargs.name` emitted by rl/game_rows.py for each row.
+interaction:
+  - name: "old_bailey_persuasion"
+    class_name: "rl.persuasion_interaction.OldBaileyPersuasionInteraction"
+    config: {}

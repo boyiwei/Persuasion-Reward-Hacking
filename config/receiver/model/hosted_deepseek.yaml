@@ -1,0 +1,29 @@
+# Held-out juror via the API gateway: a receiver the trained senders never played in training.
+# The file stem differs from `id` because the gateway id is case-sensitive (lowercase is rejected);
+# evaluation/receiver_models.py indexes on `id`.
+id: DeepSeek-V4-Flash
+transport: gateway
+role: held-out juror
+doc: |
+  Queried through the API gateway, so it needs GATEWAY_URL, GATEWAY_API_KEY and a host that can
+  reach the gateway (on a cluster whose compute nodes have no outbound access, a login node).
+  scripts/hosted_juror_login_driver.sh is the driver (the sender is served cross-node by
+  scripts/serve_sender_xnode.slurm, the audit judge by scripts/serve_receiver_xnode.slurm).
+  Swapping the juror moves the game only: the fabrication and 42-technique audits are separate
+  processes through rl.receiver_client, so they stay on the served qwen3.5-35B at
+  RECEIVER_MODEL_ID.
+# Descriptive: the transport itself lives in evaluation/rl_rollout.py, and
+# evaluation/receiver_models.py --selftest pins these keys to the code they describe.
+api:
+  url_env: GATEWAY_URL
+  key_env: GATEWAY_API_KEY
+  tier_env: GATEWAY_TIER
+  login_node_only: true
+  sampling: >-
+    evaluation.rl_rollout._hosted_receiver_sampling sends temperature and top_p (the
+    rl.receiver_client values, so there is one source of truth) plus max_tokens 8192. The
+    Qwen3.5-35B model-card keys (top_k, min_p, presence_penalty, repetition_penalty) and
+    chat_template_kwargs are not sent: they describe the served juror, not the game.
+rollout_args:
+  receiver_api: gateway
+  receiver_name: DeepSeek-V4-Flash

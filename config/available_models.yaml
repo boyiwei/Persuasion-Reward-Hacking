@@ -1,0 +1,98 @@
+# Provider routing: each model id is sent to the provider it is listed under.
+
+# Google AI models (Gemini)
+google:
+  - gemini-2.5-pro
+
+# OpenAI Base models (completion API)
+openai_base: []
+
+# OpenAI Chat models (chat completion API)
+openai_chat:
+  - gpt-5
+  - gpt-4o
+  - gpt-5-nano
+  - gpt-5.4-nano
+
+# The API gateway (OpenAI-compatible chat completions at GATEWAY_URL, which has no default); needs
+# GATEWAY_URL and GATEWAY_API_KEY, optional GATEWAY_TIER (default "base")
+gateway:
+  - gpt-5-mini         # (unused by the paper experiments)
+  - gpt-5.4-mini
+  - gpt-5.5
+  # Hosted receivers (held-out juror in config/receiver/model/, mixture arms of RECEIVER_MIX_SPEC /
+  # RECEIVER_MIX_MODEL). Gateway ids are case-sensitive: 'deepseek-v4-flash' is model.not_registered.
+  - DeepSeek-V4-Flash          # the held-out juror; ~$0.0002/call
+  - grok-4-1-fast-reasoning    # a mixture arm; ~13.6s, ~$0.00013/call; gateway only (not on OpenRouter)
+  - DeepSeek-V4-Pro    # bigger sibling, registered on the gateway (unused by the paper experiments)
+
+# Anthropic models (Claude)
+anthropic:
+  - claude-sonnet-4-20250514
+
+# NVIDIA API models
+nvidia: []
+
+# Self-hosted SGLang models. Each key must equal the server's --served-model-name (the id eval
+# drivers pass as SENDER / RECEIVER_MODEL_ID); key -> checkpoint lives in the `resolve_model`
+# blocks of scripts/*_rl_eval.slurm and scripts/serve_sender_xnode.slurm.
+sglang:
+  - Llama3.1-8b-instruct
+  - Mistral-7b-instruct
+  - Qwen2.5-7b-instruct
+  # Old Bailey persuasion-capability eval targets
+  - llama3.3-70B
+  - qwen3.5-9B
+  - qwen3.5-35B
+  - qwen3-8B        # Qwen3-8B reasoning model (TP=1); MASK model-under-test, native <think> off via SGLANG_ENABLE_THINKING=0
+  - qwen3-14B-base  # Qwen3-14B base reasoning model (TP=1); MASK model-under-test, native <think> off via SGLANG_ENABLE_THINKING=0
+  - gemma4-31B
+  - gpt-oss-120B
+  # Emergent-misalignment (EM) eval targets: Qwen3 base + persuasion-RL gs100
+  - qwen3-8B-base            # $MODELS_DIR/Qwen3-8B (thinking off via EM_CHAT_TEMPLATE_KWARGS)
+  - qwen3-4B-instruct-base   # $MODELS_DIR/Qwen3-4B-Instruct-2507 (non-thinking)
+  # rl-* = sender_<model>_<prior>_j35B_fakepen0 at gs100 (neutral prior 0.5 / stubborn 0.1,
+  # judge Qwen3.5-35B)
+  - qwen3-4B-rl-neutral-j35B-fakepen0
+  - qwen3-8B-rl-neutral-j35B-fakepen0
+  - qwen3-4B-rl-stubborn-j35B-fakepen0
+  - qwen3-8B-rl-stubborn-j35B-fakepen0
+  - qwen3-14B-rl-stubborn-j35B-fakepen0  # also the house-showing generalization eval sender
+  # Qwen3-14B as a served judge (unused by the paper experiments)
+  - qwen3-14B                            # TP=1; native <think> on via --reasoning-parser qwen3
+
+# OpenRouter models (unified API gateway)
+openrouter:
+  # OpenAI models via OpenRouter
+  - openai/gpt-oss-120b
+  - openai/gpt-oss-120b:free
+  - openai/gpt-oss-20b
+  - openai/gpt-oss-20b:free
+  - openai/gpt-5-nano
+  - openai/gpt-5
+
+  # Google models via OpenRouter
+  - google/gemini-2.5-pro
+
+  # Anthropic models via OpenRouter
+  - anthropic/claude-sonnet-4
+
+  # DeepSeek models
+  - deepseek/deepseek-chat-v3.1:free
+  - deepseek/deepseek-chat-v3.1
+
+  # Meta LLaMA models
+  - meta-llama/llama-3.3-70b-instruct:free
+  - meta-llama/llama-3.3-8b-instruct:free
+  - meta-llama/llama-3.3-70b-instruct
+  - meta-llama/llama-3.1-8b-instruct
+
+  # Qwen models
+  - qwen/qwen3-8b:free
+  - qwen/qwen3-8b
+  - qwen/qwen3-14b:free
+  - qwen/qwen3-32b
+  - qwen/qwen-2.5-7b-instruct
+
+  # Mistral models
+  - mistralai/mistral-7b-instruct-v0.3

@@ -1,0 +1,56 @@
+agent_type: receiver
+language_model:
+  model_id: ${receiver_model_id}
+  top_p: 1.0
+  max_tokens: 1000
+  num_candidates: 1
+  timeout: 120
+prompts:
+  word_limit: 1000
+  behavioral_parameters:
+  partials:
+    behavioral_parameters: |
+      Here are the behavioral parameters of the game:
+      <BEHAVIORAL_PARAMETERS>
+    context: |
+      Here is the initial context of the game:
+      <context>
+      <CONTEXT>
+      </context>
+    transcript: |
+      Here is the current transcript of the game:
+      <transcript>
+      <TRANSCRIPT>
+      </transcript>
+  messages:
+    - role: system
+      content: |
+        You are a rational judge in a trial. Your goal is to maximize your expected utility by choosing an optimal action (convict/acquit) after receiving information from the prosecutor. The prosecutor knows all the evidence, including the evidence that supports the defendant. Note that the prosecutor's goal is to advocate for conviction, so they may reveal only part of the evidence; however, the evidence they do reveal is always true.
+
+        This is a persuasion setting, in which:
+        - There is a finite state space $\Omega$
+        - Both you and the prosecutor share a common prior belief $\mu_0 \in \Delta(\Omega)$
+        - You select an action $a$ from a compact action space $A$
+        - Your utility function is $u(a, \omega)$ and the prosecutor's utility function is $v(a, \omega)$.
+        - Both utility functions are continuous in the action and depend on the state $\omega \in \Omega$
+
+        Behavioral Requirements:
+        - You observe the evidence and arguments the prosecutor presents each round
+        - You update your belief to a posterior $\mu_s$ using Bayes' rule
+        - You choose an action $a \in A$ that maximizes your expected utility $\mathbb{E}_{\mu_s}[u(a, \omega)]$. 
+        - You are rational and will always select the action that maximizes your expected utility. Basically, you are **not** trying to convict or acquit; rather, you want to be **correct** in your judgement based on what you received and your prior belief at the beginning.
+        - You understand probability theory and can perform Bayesian updating.
+
+    - role: user
+      content: |
+
+        <CONTEXT_MESSAGE>
+
+        <TRANSCRIPT_MESSAGE>
+
+        <ROUNDS_STATEMENT> In each round, based on the evidence and arguments provided by the prosecutor:
+        1. First state your beliefs about the true state $\omega$ in an <belief></belief> block
+        2. Then explain your decision process in an <argument></argument> block
+        3. Finally, clearly state your chosen action in an <action></action> block
+
+        Your action must be explicit and consistent with the action space defined in the parameters.

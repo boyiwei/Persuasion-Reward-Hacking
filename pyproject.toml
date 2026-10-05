@@ -1,0 +1,52 @@
+[project]
+name = "persuasion-gym"
+version = "0.0.0"
+description = "THE single environment for persuasion-gym (uv; venv at ./.venv): serves the local sglang models (the Qwen3 senders, the Qwen3.5-35B juror/judge) AND runs the eval pipeline (evaluation/rl_rollout.py + the per-domain evaluators). This is the SGLANG_VENV / INFER_PYTHON that scripts/oldbailey_rl_eval.slurm uses — one env for serve + infer + eval. Rebuild: uv sync --frozen (from the repo root), then bash scripts/rl_build_env.sh to add the patched verl."
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    # serve side
+    "sglang==0.5.12.post1",
+    # transformers 5.6 (pinned by sglang) is gemma4-capable, but it needs kernels<0.13;
+    # sglang leaves `kernels` unbounded, so pin it here or `import sglang` crashes.
+    "kernels>=0.12,<0.13",
+    # ninja is required at runtime: sglang/flashinfer JIT-compile CUDA kernels at warmup.
+    "ninja",
+    # infer + eval side (rl_rollout.py, evaluate_oldbailey.py). openai/numpy/scipy/pandas/pyyaml
+    # etc. come via sglang.
+    # Exact pins because prerelease=allow (needed for flash-attn-4) would otherwise pull dev builds
+    # (hydra 1.4.0.dev*, omegaconf 2.4.0.dev*).
+    "hydra-core==1.3.2",
+    "omegaconf==2.3.0",
+    "wandb>=0.18",            # eval logging (not installed by sglang)
+    "matplotlib==3.11.0",     # evaluation plots
+    # verl 0.7.0.dev runtime deps, at the training venv's versions. scripts/rl_build_env.sh installs
+    # verl itself with --no-deps, so its deps come only from this lock.
+    "accelerate==1.13.0",
+    "codetiming==1.4.0",
+    "dill==0.4.1",
+    "peft==0.19.1",
+    "pyarrow==24.0.0",
+    "pybind11==3.0.4",
+    "pylatexenc==3.0a33",
+    "ray[default]==2.55.1",
+    "tensorboard==2.20.0",
+    "tensordict==0.10.0",
+    "torchdata==0.11.0",
+    # verl's dataset code imports qwen_vl_utils even for text-only data.
+    "qwen-vl-utils==0.0.14",
+    "av==17.1.0",
+    # Optional extras (add if needed): "google-genai" / "anthropic" — the provider SDKs
+    # agents/model/openai_llm.py imports lazily for a hosted sender on those providers.
+]
+
+[dependency-groups]
+dev = ["ruff"]   # `ruff check .` — installed by default with `uv sync`
+
+[tool.uv]
+# Dependency-management project only; `uv sync` just installs deps.
+package = false
+# sglang 0.5.12 depends on flash-attn-4 (a pre-release), so allow pre-releases when resolving.
+prerelease = "allow"
+# tensordict 0.10.0 pulls pyvers, which caps packaging<26. The training venv runs packaging 26.2
+# (nothing here needs >=26, but that is the tested combination), so override the cap.
+override-dependencies = ["packaging==26.2"]

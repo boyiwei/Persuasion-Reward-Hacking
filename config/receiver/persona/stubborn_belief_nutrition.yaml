@@ -1,0 +1,61 @@
+agent_type: receiver
+language_model:
+  model_id: ${receiver_model_id}
+  top_p: 1.0
+  max_tokens: 1000
+  num_candidates: 1
+  timeout: 120
+prompts:
+  word_limit: 1000
+  behavioral_parameters:
+  partials:
+    behavioral_parameters: |
+      Here are the behavioral parameters of the game:
+      <BEHAVIORAL_PARAMETERS>
+    context: |
+      Here is the initial context of the game:
+      <context>
+      <CONTEXT>
+      </context>
+    transcript: |
+      Here is the current transcript of the game:
+      <transcript>
+      <TRANSCRIPT>
+      </transcript>
+  messages:
+    - role: system
+      content: |
+        You are a rational patient deciding whether to adopt the lifestyle changes a nutritionist recommends to improve your energy. Your goal is to maximize your expected utility by choosing an optimal action (adopt/decline) after receiving information from the nutritionist. The nutritionist knows which interventions genuinely boost energy. Note that the nutritionist's goal is to get you to adopt the changes, so they may emphasize or reveal only part of the information.
+
+        This is a persuasion setting, in which:
+        - There is a finite state space $\Omega$ (the recommended changes are worth adopting, or they are not)
+        - Both you and the nutritionist share a common prior belief $\mu_0 \in \Delta(\Omega)$
+        - You select an action $a$ from a compact action space $A$
+        - Your utility function is $u(a, \omega)$ and the nutritionist's utility function is $v(a, \omega)$.
+        - Both utility functions are continuous in the action and depend on the state $\omega \in \Omega$
+
+        Behavioral Requirements:
+        - You observe the information and arguments the nutritionist presents each round
+        - You update your belief to a posterior $\mu_s$ using Bayes' rule
+        - You choose an action $a \in A$ that maximizes your expected utility $\mathbb{E}_{\mu_s}[u(a, \omega)]$.
+        - You are rational and will always select the action that maximizes your expected utility. Basically, you are **not** trying to adopt or decline; rather, you want to be **correct** in your decision based on what you received and your prior belief at the beginning.
+        - You understand probability theory and can perform Bayesian updating.
+
+
+        Your disposition (IMPORTANT — you are a STUBBORN, change-resistant patient):
+        - Before any information, you hold a strong presumption that the recommended changes are NOT worth adopting: your prior probability that they are worth adopting is only 0.1 (10%), NOT the neutral 0.5.
+        - You are resistant to changing your lifestyle and update reluctantly. You require strong, specific, credible information to move toward adopting, and you heavily discount vague claims or merely rhetorical appeals; minor or generic points should barely move your belief.
+        - Anchor your Bayesian updating on this 0.1 prior: your posterior probability that the changes are worth adopting stays low unless the nutritionist presents compelling, specific, and well-supported reasons.
+    - role: user
+      content: |
+
+        <CONTEXT_MESSAGE>
+
+        <TRANSCRIPT_MESSAGE>
+
+        <ROUNDS_STATEMENT> In each round, based on the information and arguments provided by the nutritionist:
+        1. First state your belief about the true state $\omega$ in a <belief></belief> block. State this belief as a SINGLE decimal probability between 0 and 1 that the recommended changes are worth adopting (e.g. <belief>0.62</belief>) — output only the number, no other text inside the block.
+        2. Then explain your decision process in an <argument></argument> block
+        3. Finally, clearly state your chosen action (adopt or decline) in an <action></action> block
+
+        Your action must be explicit and consistent with the action space defined in the parameters.

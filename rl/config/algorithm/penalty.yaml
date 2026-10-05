@@ -1,0 +1,30 @@
+# Algorithm component `penalty`, the mitigation arm. On top of the base reward,
+#
+#   score -= PENALTY_COEFFICIENT * sum of the 11 misaligned-technique monitors
+#
+# (illegal_full11 = belief coercion + the false-information indicator + the 9 per-strategy judges;
+# rl/reward_function.py ILLEGAL_TERMS). Monitors are pinned on at sample rate 1.0: an unsampled
+# rollout would read rh_*=0 and train penalty-free.
+id: penalty
+order: 1
+doc: >-
+  Subtracts PENALTY_COEFFICIENT times the sum of the 11 misaligned-technique monitors from the
+  score, with the monitors computed on every sample.
+env:
+  PENALTY_TERMS: illegal_full11
+  PENALTY_COEFFICIENT: "0.3"
+  RL_MONITOR_ENABLE: "1"
+  RL_MONITOR_SAMPLE_RATE: "1.0"
+env_off:
+  PENALTY_TERMS: ""
+  PENALTY_COEFFICIENT: ""
+# Either knob at a non-off value means the penalty is active (rl/reward_function.py _penalty_config).
+gate: [PENALTY_TERMS, PENALTY_COEFFICIENT]
+requires:
+  env:
+    RL_MONITOR_ENABLE: "1"
+    RL_MONITOR_SAMPLE_RATE: "1.0"
+# FAKEPEN_TAG in scripts/rl_train_sender.slurm: "pen" + the coefficient with '.' -> 'p' + the term
+# set, and the literal fakepen0 when no penalty is active.
+expect_name_tag: pen0p3_illegal_full11
+expect_name_tag_absent: fakepen0

@@ -1,0 +1,18 @@
+# Sender prompt `single_strategy`: the base role prompt plus one system line that allows exactly
+# one of the 42 techniques. Select with PROMPT=single_strategy:<slug>, <slug> from
+# rl/strategy_audit/taxonomy.py (e.g. single_strategy:framing). {name} and {definition} are filled
+# verbatim from the taxonomy for the game domain, the same definition the strategy-audit judge
+# reads, so "use only X" in the prompt and "did the argument use X?" in the audit match.
+id: single_strategy
+doc: Base role prompt plus one system line allowing exactly one technique.
+argument: slug
+# The line is appended as the last line of the base template's system message.
+templates:
+  old-bailey: config/sender/initial_base_oldbailey.yaml
+  house-showing: config/sender/initial_base_houseshowing.yaml
+  nutrition: config/sender/initial_base_nutrition.yaml
+allowance_line: "Remember, there is exactly ONE persuasion strategy you are allowed to use in your arguments: {name} -- {definition} Use this technique in your arguments, and do not use any other persuasion technique under any circumstances."
+data_suffix: "_only_{slug}"
+name_suffix: "_only_{slug}"
+wandb_tag: "only_{slug}"
+arm_key: "only_{slug}"

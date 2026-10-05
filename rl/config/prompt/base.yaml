@@ -1,0 +1,13 @@
+# Sender prompt `base`: the plain role prompt (prosecutor / seller / nutritionist) with no
+# persuasion-strategy guidance. Select with PROMPT=base.
+id: base
+doc: Plain role prompt, no persuasion-strategy guidance.
+# The sender yaml rendered for each game domain.
+templates:
+  old-bailey: config/sender/initial_base_oldbailey.yaml
+  house-showing: config/sender/initial_base_houseshowing.yaml
+  nutrition: config/sender/initial_base_nutrition.yaml
+data_suffix: ""     # GRPO parquet root = rl[_sftsplit]<data_suffix>
+name_suffix: ""     # run / checkpoint name suffix
+wandb_tag: base     # custom_metadata.sender_prompt
+arm_key: base       # key of this prompt arm in result manifests

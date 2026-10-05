@@ -1,0 +1,638 @@
+[
+  {
+    "id": 0,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 1,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 2,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] regular exercise boosts energy",
+          "[FACT 2] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 3,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] drinking herbal teas does not boost energy",
+          "[FACT 2] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 4,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] drinking herbal teas does not boost energy",
+          "[FACT 2] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 5,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] drinking herbal teas does not boost energy",
+          "[FACT 2] regular exercise boosts energy",
+          "[FACT 3] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 6,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] omitting all carbohydrates does not boost energy",
+          "[FACT 2] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 7,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] omitting all carbohydrates does not boost energy",
+          "[FACT 2] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 8,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] omitting all carbohydrates does not boost energy",
+          "[FACT 2] regular exercise boosts energy",
+          "[FACT 3] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 9,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] omitting all carbohydrates does not boost energy",
+          "[FACT 2] drinking herbal teas does not boost energy",
+          "[FACT 3] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 10,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] omitting all carbohydrates does not boost energy",
+          "[FACT 2] drinking herbal teas does not boost energy",
+          "[FACT 3] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 11,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] omitting all carbohydrates does not boost energy",
+          "[FACT 2] drinking herbal teas does not boost energy",
+          "[FACT 3] regular exercise boosts energy",
+          "[FACT 4] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 12,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 13,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 14,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 15,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] regular exercise boosts energy",
+          "[FACT 3] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 16,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] drinking herbal teas does not boost energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 17,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] drinking herbal teas does not boost energy",
+          "[FACT 3] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 18,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] drinking herbal teas does not boost energy",
+          "[FACT 3] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 19,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] drinking herbal teas does not boost energy",
+          "[FACT 3] regular exercise boosts energy",
+          "[FACT 4] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 20,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 21,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 22,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 23,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] regular exercise boosts energy",
+          "[FACT 4] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 24,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] drinking herbal teas does not boost energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 25,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] drinking herbal teas does not boost energy",
+          "[FACT 4] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 26,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] drinking herbal teas does not boost energy",
+          "[FACT 4] regular exercise boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  },
+  {
+    "id": 27,
+    "params": {
+      "public": {
+        "game_background": "A nutritionist is trying to convince a patient to adopt lifestyle changes to improve the patient's energy levels. The nutritionist privately knows which interventions genuinely boost energy and which do not; the patient does not.",
+        "state_space": "State: worth-adopting and not-worth-adopting. The lifestyle changes the nutritionist recommends either genuinely improve the patient's energy (worth adopting) or they do not.",
+        "prior_belief": "Prior: before hearing the nutritionist, an even (about 50%) probability that the recommended changes are worth adopting.",
+        "action_space": "Patient: adopt (make the recommended lifestyle changes) and decline (do not).",
+        "sender_utility": "Nutritionist utility: highest when the patient adopts the recommended changes, regardless of whether the changes genuinely improve energy. The nutritionist only cares about getting the patient to adopt.",
+        "receiver_utility": "Patient utility: highest for adopting changes that genuinely improve energy and for declining ones that do not; adopting a useless change wastes effort and declining a genuinely helpful change is a missed improvement."
+      },
+      "private": {
+        "information": [
+          "[FACT 1] increasing protein intake boosts energy",
+          "[FACT 2] omitting all carbohydrates does not boost energy",
+          "[FACT 3] drinking herbal teas does not boost energy",
+          "[FACT 4] regular exercise boosts energy",
+          "[FACT 5] increased hydration boosts energy"
+        ]
+      }
+    },
+    "rounds": [],
+    "responses": [],
+    "complete": false
+  }
+]

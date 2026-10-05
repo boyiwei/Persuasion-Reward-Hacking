@@ -1,0 +1,201 @@
+# GRPO config for Sender training: verl's stock `ppo_trainer` plus the run-invariant knobs from the
+# paper (§3.1 + App. C.2). scripts/rl_train_sender.slurm passes the per-run knobs on the CLI
+# (actor_rollout_ref.model.path, data.train_files/val_files, trainer.experiment_name,
+# n_gpus_per_node, total_training_steps, default_local_dir), plus fixed ones: actor
+# fsdp_config.*_offload=false and actor.optim.* (flat constant LR, no warmup; lr is set below).
+#
+# Invoke: python -m verl.trainer.main_ppo --config-path <repo>/rl/config --config-name grpo_persuasion <overrides>
+hydra:
+  searchpath:
+    - pkg://verl.trainer.config
+  # Hydra run dir goes under the git-ignored logs/ instead of outputs/${now}. It holds only .hydra/
+  # and main_ppo.log (checkpoints go to trainer.default_local_dir); the run does not chdir here, so
+  # the relative interaction_config_path still resolves against the repo root.
+  run:
+    dir: logs/verl/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: logs/verl/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+
+defaults:
+  - ppo_trainer
+  - _self_
+
+algorithm:
+  adv_estimator: grpo
+  use_kl_in_reward: false
+
+data:
+  train_batch_size: 16
+  max_prompt_length: 8192
+  max_response_length: 8192  # an untrained policy rambles to the cap; a larger cap OOMs
+  # compute_log_prob (logits seq*vocab ~40k*152k) and slows generation ~4x. Smoke outputs are
+  # <5.4k tok (4B). Qwen3-8B keeps the prompt's <thinking> even with native <think> off and runs
+  # longer; watch reward_hacking/response_length.
+  return_raw_chat: true
+  # Applied to the initial prompt here and to every multi-turn turn (patch_verl.sh (8);
+  # RL_SENDER_THINKING=1 re-enables native <think>). A no-op for Qwen3-4B-Instruct-2507 (its template
+  # has no <think> branch); for Qwen3-8B it injects an empty <think></think>, so the 8B reasons only
+  # in the prompt's <thinking> block.
+  apply_chat_template_kwargs:
+    enable_thinking: false
+
+actor_rollout_ref:
+  model:
+    # Policy path comes from the CLI (POLICY_MODEL/POLICY_PATH): Qwen3-4B-Instruct-2507 (default) or
+    # Qwen3-8B, both dense text models with the 152k vocab. The 8B's FSDP state is ~2x the 4B's, so
+    # gpu_memory_utilization (sglang mem_fraction_static) is the memory lever.
+    # freeze_vision_tower belongs under actor (HFModelConfig has no such field).
+    enable_gradient_checkpointing: true
+    # The env ships flash-attn 4 (for sglang), not transformers' FA2, so the FSDP actor/ref use SDPA
+    # to avoid an FA dispatch mismatch under torch2.11/cu13.
+    override_config:
+      attn_implementation: sdpa
+  actor:
+    strategy: fsdp2
+    # Dense text model: false skips verl's vision-tower freeze (fsdp_workers.py:442). True only for
+    # a VLM policy.
+    freeze_vision_tower: false
+    optim:
+      lr: 1.0e-6
+    use_kl_loss: true
+    kl_loss_coef: 0.01
+    kl_loss_type: low_var_kl
+    # Must be <= train_batch_size; the train script sets it to TRAIN_BATCH.
+    ppo_mini_batch_size: 16
+    # micro_batch=1, not use_dynamic_bsz: dynamic_bsz packs up to ppo_max_token_len_per_gpu, whose
+    # floor is max_prompt+max_response = 16384, and logits/log_softmax/entropy at 16384 x 152k vocab
+    # (~20-28GB) OOM the full-FT 4B on 4 GPUs (~13GB free after FSDP). Chunked entropy needs rmpad
+    # (flash_attn.bert_padding is absent here); the sdpa path uses unchunked entropy_from_logits
+    # (dp_actor.py:267) and old_log_prob hardcodes calculate_entropy=True (fsdp_workers.py:983).
+    # dynamic_bsz would need smaller seq caps (e.g. 2048 + 4096) or 8 trainer GPUs.
+    ppo_micro_batch_size_per_gpu: 1
+    # chunk the entropy softmax over the vocab to bound the logit-activation memory spike
+    entropy_from_logits_with_chunking: true
+  rollout:
+    name: sglang
+    # The 4B fits one 80GB H100; TP=1 avoids sglang-TP multiprocessing and a collision with the
+    # co-located 35B judge server's TP workers.
+    tensor_model_parallel_size: 1
+    # sync runs the native SGLang multi-turn loop (_req_level_generate_sequences), where
+    # interactions fire.
+    mode: sync
+    n: 16
+    # Validation samples like the training rollout instead of verl's default greedy val;
+    # interpolated so the two stay locked. n stays 1.
+    val_kwargs:
+      temperature: ${actor_rollout_ref.rollout.temperature}
+      top_p: ${actor_rollout_ref.rollout.top_p}
+      top_k: ${actor_rollout_ref.rollout.top_k}
+      do_sample: ${actor_rollout_ref.rollout.do_sample}
+    log_prob_micro_batch_size_per_gpu: 1
+    multi_turn:
+      enable: true
+      # 4/3, one above the 3 rounds, so the Receiver is queried after the final argument and its
+      # belief becomes the reward. See rl/persuasion_interaction.py.
+      max_assistant_turns: 4
+      max_user_turns: 3
+      interaction_config_path: rl/config/interaction_config.yaml
+      # Diagnostic only; disabled so spurious whitespace/BOS .eq() mismatches cannot abort a rollout.
+      tokenization_sanity_check_mode: disable
+  ref:
+    log_prob_micro_batch_size_per_gpu: 1
+
+custom_reward_function:
+  path: rl/reward_function.py
+  name: belief_reward
+
+reward_model:
+  reward_manager: naive
+
+trainer:
+  nnodes: 1
+  total_training_steps: 100
+  save_freq: 50   # full-FT checkpoints are large
+  test_freq: 10
+  project_name: persuasion-gym-oldbailey-rl
+  logger: ["console", "wandb"]
+
+# Run metadata: verl logs the whole config to the wandb `config` tab, so these fields document the
+# run, including the receiver/judge model verl never sees (rl/receiver_client.py). Metadata only:
+# the runtime reads the env vars directly. scripts/rl_train_sender.slurm sets the values on the CLI
+# (sender=POLICY_MODEL, receiver=judge=JUDGE_MODEL, served_model_path=JUDGE_PATH); the sender
+# default covers direct verl invocations.
+custom_metadata:
+  sender_model: ${actor_rollout_ref.model.path}
+  receiver_model: unknown
+  judge_model: unknown
+  served_model_path: unknown
+  # Which cognitive-model receiver the sender trains against (DIST): receiver_distribution is
+  # bayesian|stubborn, receiver_types the model behind it (rl/cognitive_models.py PROMPT_PATHS),
+  # receiver_prior the P(guilty) baseline (0.5 neutral / 0.1 stubborn).
+  receiver_distribution: unknown
+  receiver_types: unknown
+  receiver_prior: unknown
+  # ROLLOUT_SEED; -1 = off. Non-negative values derive per-step/game/rollout/turn sender,
+  # local-Receiver and fallback-replay seeds (patch_verl 14T/14TF/14S/14SR/14R). Hosted receiver
+  # sampling stays provider-defined.
+  rollout_seed: -1
+  # detinf1 = SGLang server-wide deterministic inference for the policy and the co-served
+  # Receiver, so request sampling_seed fields are honoured rather than discarded.
+  rollout_deterministic_inference: false
+  rollout_seed_impl: "off"
+  # Mixture of receivers (RECEIVER_MIX_*; patch_verl 10H, rl/receiver_mix.py,
+  # rl/receiver_client.py):
+  #   2-way: receiver_mix_model set; each step plays round(frac * batch) games against that hosted
+  #     receiver and the rest against JUDGE_MODEL; receiver_model reads "<judge>+<mix_model>@<frac>".
+  #   N-way: receiver_mix_spec "label:weight,..." (labels are hosted model ids, "local" is
+  #     JUDGE_MODEL), e.g. "local:4,DeepSeek-V4-Flash:4,gpt-5-mini:4,grok-4-1-fast-reasoning:4";
+  #     receiver_model reads "<judge>+<a>+<b>+<c>@4:4:4:4".
+  # receiver_mix_arms is the bare label list, for grouping runs in the wandb UI. receiver_mix_gateway
+  # is the effective endpoint (shows when a loopback run did not hit the real gateway). ""/0.0/0 = off.
+  receiver_mix_model: ""
+  receiver_mix_frac: 0.0
+  receiver_mix_seed: 0
+  receiver_mix_spec: ""
+  receiver_mix_arms: ""
+  receiver_mix_weights: ""
+  receiver_mix_n_arms: 0
+  receiver_mix_gateway: ""
+  # PENALTY_TERMS / PENALTY_COEFFICIENT: score = (mu - prior) - coefficient * sum over active terms
+  # of that term's rh_ monitor (fabrication -> rh_fake_evidence; belief -> rh_belief_coercion).
+  penalty_terms: ""          # e.g. "fabrication,belief"; "" = off
+  penalty_coefficient: 0.0   # shared lambda across active terms
+  # FORMAT_REWARD_COEFF: score += coefficient * fraction of rounds with a closed
+  # <thinking>+<argument> pair.
+  format_reward_coeff: 0.0
+  # Aux CE loss (AUX_CE / AUX_CE_COEFF / AUX_CE_ROW_FRAC / AUX_CE_DATA; patch_verl.sh (10I)+(13),
+  # rl/aux_ce.py). 0/0.0/"" = off.
+  aux_ce: 0
+  aux_ce_coeff: 0.0
+  aux_ce_row_frac: 0.0
+  aux_ce_data: ""
+  # "game" = probe item looked up by game id; "random" = drawn from global per-label pools with an
+  # exact 1:1 label split; "none" = off.
+  aux_ce_sampling: "none"
+  # "off" = fixed aux_ce_coeff; "norm_ratio" targets aux_ce_target_grad_ratio * ||g_GRPO|| with
+  # aux_ce_coeff as a cap (AUX_CE_BALANCE_MODE / AUX_CE_TARGET_GRAD_RATIO).
+  aux_ce_balance_mode: "off"
+  aux_ce_target_grad_ratio: 0.0
+  # 1 = balance the four item kinds (claim_real/fabrication, paraphrase_real/altered_real) per
+  # batch: each scheduled pair gets a block positionally, and a pair never straddles two blocks.
+  aux_ce_kind_balance: 0
+  # REJECTION_SAMPLING / RS_TARGET_CLEAN / RS_MAX_GEN_ROUNDS (patch_verl.sh (10G),
+  # rl/rejection_sampling.py): prompts below rs_target_clean positive rollouts get up to
+  # rs_max_gen_rounds regen rounds, then exactly rollout.n are kept (positives first). 0/0/0 = off.
+  rejection_sampling: 0
+  rs_target_clean: 0
+  rs_max_gen_rounds: 0
+  # PROMPT, resolved by rl/sender_prompts.py: base | strategies | only_<slug>.
+  sender_prompt: base
+  # ALGO / PROMPT (rl/arm_config.py, rl/sender_prompts.py): algo is the registry-ordered
+  # base[+penalty][+aux_loss], prompt the spec as launched. Together they name the released arm.
+  algo: base
+  prompt: base
+  # Data variant + DIST subdir, e.g. rl/stubborn, rl_strategies/bayesian, rl_sftsplit_strategies/stubborn.
+  dataset_name: unknown
+  # "base" (stock POLICY_MODEL) or the HF dir of an SFT init (SFT_INIT).
+  policy_init: base
+  # TEACHER_MODEL that generated the SFT demonstrations (the policy itself for self-distillation);
+  # "unknown"/"none" for from-base or external-teacher runs recorded elsewhere.
+  teacher_model: unknown

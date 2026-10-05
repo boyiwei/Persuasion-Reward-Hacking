@@ -1,0 +1,22 @@
+# Juror served locally with SGLang: the paper's main receiver, and the fabrication and
+# 42-technique audit judge whichever juror played the games. The file stem differs from `id`
+# (case and dots); evaluation/receiver_models.py indexes on `id`.
+id: qwen3.5-35B
+# Marks the study's main juror, not the transport evaluation/rl_rollout.py falls back to.
+default: true
+transport: sglang
+role: main juror; always the audit judge
+doc: |
+  Served with SGLang beside the sender by scripts/{oldbailey,houseshowing,nutrition}_rl_eval.slurm,
+  or on its own node by scripts/serve_receiver_xnode.slurm. evaluation/rl_rollout.py reaches it
+  through rl.receiver_client at RECEIVER_HOST / RECEIVER_PORT / RECEIVER_MODEL_ID, with the
+  training transport and sampling, so an evaluation game is the GRPO rollout's game.
+# ${MODELS_DIR} is expanded by evaluation/receiver_models.py when the yaml is loaded (default
+# <repo>/models).
+serve:
+  path: ${MODELS_DIR}/Qwen3.5-35B-A3B
+  tp: 2
+# --receiver-name stays unset: rl.receiver_client then serves RECEIVER_MODEL_ID, which the
+# launchers set to the model they serve.
+rollout_args:
+  receiver_api: sglang

@@ -1,0 +1,53 @@
+# Algorithm component `aux_loss`: an auxiliary cross-entropy awareness loss inside every GRPO
+# optimizer step (verl patches 10I + 13T, pure logic in rl/aux_ce.py). Each rollout row gets one
+# probe item from the aux-loss sidecar (962 TRUE / 962 FALSE statements over the same games, in the
+# kinds claim_real / fabrication / paraphrase_real / altered_real); the CE on its gold true/false
+# token is backpropagated with the policy gradient. The aux gradient is scaled toward
+# AUX_CE_TARGET_GRAD_RATIO of the GRPO gradient norm, capped by AUX_CE_COEFF; the four kinds are
+# balanced positionally per batch so all DP ranks agree on the schedule.
+#
+# Build the sidecar with datasets/old_bailey/aux_loss/build_chain.sh, or point AUX_CE_DATA at
+# another one. The auto-derived EXP_NAME does not encode AUX_CE_DATA, so an aux-dataset ablation
+# must pass an explicit EXP_NAME.
+id: aux_loss
+order: 2
+doc: >-
+  Auxiliary cross-entropy awareness loss on the aux-loss probe sidecar inside every optimizer
+  step, gradient-balanced against the GRPO term.
+env:
+  AUX_CE: "1"
+  AUX_CE_DATA: &sidecar "{repo}/datasets/old_bailey/_generated/aux_ce_probe/variants/final/{size}/sidecar.jsonl.gz"
+  AUX_CE_COEFF: "0.5"
+  AUX_CE_SAMPLING: random
+  AUX_CE_KIND_BALANCE: "1"
+  AUX_CE_BALANCE_MODE: norm_ratio
+  AUX_CE_TARGET_GRAD_RATIO: "0.25"
+  AUX_CE_MAX_PROMPT: "8192"
+  AUX_CE_ROW_FRAC: "1.0"
+  AUX_CE_SEED: "2026"
+# scripts/rl_train_sender.slurm exports every AUX_CE_* unconditionally (an unset one aborts under
+# `set -u`) and records custom_metadata.aux_ce_data on every run, so the off state spells them all
+# out and AUX_CE_DATA keeps the sidecar path rather than "".
+env_off:
+  AUX_CE: "0"
+  AUX_CE_DATA: *sidecar
+  AUX_CE_COEFF: "0.5"
+  AUX_CE_SAMPLING: random
+  AUX_CE_KIND_BALANCE: "0"
+  AUX_CE_BALANCE_MODE: "off"
+  AUX_CE_TARGET_GRAD_RATIO: "0.25"
+  AUX_CE_MAX_PROMPT: "8192"
+  AUX_CE_ROW_FRAC: "1.0"
+  AUX_CE_SEED: "2026"
+gate: [AUX_CE]
+requires:
+  # Every probe context in the sidecar bakes the 42-technique system prompt, and nothing downstream
+  # compares it with the policy's: the only sha the submit gate checks is the chat template's.
+  prompt: [strategies]
+conflicts:
+  # Regenerated rollouts need distinct aux row schedules, which the positional scheduler cannot give.
+  env:
+    REJECTION_SAMPLING: "1"
+# AUXCE_SUFFIX in scripts/rl_train_sender.slurm: "_auxce" + the coefficient, the sampler, the
+# kind-balance tag and the norm-ratio target, each with '.' -> 'p'.
+expect_name_tag: _auxce0p5_random_kindbal_normratio0p25

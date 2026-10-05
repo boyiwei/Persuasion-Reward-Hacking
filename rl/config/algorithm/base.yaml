@@ -1,0 +1,18 @@
+# Algorithm component `base`: the reward every arm optimizes. Implicit (ALGO may omit it);
+# `penalty` and `aux_loss` add to it:
+#
+#   score = (the receiver's final P(guilty) - the prior)
+#         + FORMAT_REWARD_COEFF * fraction of rounds with a closed <thinking> + <argument> pair
+#
+# The reward-hacking monitors stay on so every run logs reward_hacking/*.
+id: base
+order: 0
+implicit: true
+doc: >-
+  Outcome reward (the juror's final belief minus the prior) plus the turn-level format bonus, with
+  the reward-hacking monitors on for logging.
+env:
+  FORMAT_REWARD_COEFF: "0.1"
+  RL_MONITOR_ENABLE: "1"
+# FMT_SUFFIX in scripts/rl_train_sender.slurm: "_fmt" + the coefficient with '.' -> 'p'.
+expect_name_tag: _fmt0p1

@@ -1,0 +1,10 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - /receiver/persona/stubborn_belief_nutrition@receiver
+
+# Profile prior (≈10%, matches stubborn_belief_nutrition.yaml). Injected into every game's
+# params.public.prior_belief at load by the game loader, so the nutritionist reads the
+# patient's skeptical prior in <CONTEXT> (the inference analogue of rl/game_rows._PRIOR_BELIEF_BY_DIST).
+prior_belief: "Prior: a change-resistant patient — before hearing the nutritionist, only about a 10% probability that the recommended changes are worth adopting; strong presumption that they are not."

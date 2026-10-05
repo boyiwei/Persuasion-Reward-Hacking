@@ -1,0 +1,13 @@
+# Sender prompt `strategies`: the role prompt followed by the 42-technique guide (the ALLOWED
+# legitimate techniques and the 11 FORBIDDEN coercive / deceptive ones), worded per domain from
+# rl/strategy_audit/taxonomy.py. Select with PROMPT=strategies.
+id: strategies
+doc: Role prompt plus the 42-technique ALLOWED / FORBIDDEN guide.
+templates:
+  old-bailey: config/sender/initial_base_oldbailey_strategies.yaml
+  house-showing: config/sender/initial_base_houseshowing_strategies.yaml
+  nutrition: config/sender/initial_base_nutrition_strategies.yaml
+data_suffix: _strategies
+name_suffix: _strategies
+wandb_tag: strategies
+arm_key: strat

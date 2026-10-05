@@ -1,0 +1,55 @@
+agent_type: sender
+# Present each prior round's patient reply to the nutritionist exactly like the RL rollout: a
+# <receiver_response> block with the patient's <belief> + <argument> (action dropped, CoT stripped),
+# framed "Round X of N. ... The Receiver responded to your argument:" (agents/agent_quality.py
+# get_transcript_string, history="receiver_response"). Identical to house-showing and old-bailey.
+transcript_history: receiver_response
+language_model:
+  model_id: ${sender_model_id}
+  top_p: 1.0
+  max_tokens: 1500
+  num_candidates: 1
+  timeout: 120
+prompts:
+  word_limit: 1000
+  behavioral_parameters:
+  partials:
+    behavioral_parameters: |
+      Here are the behavioral parameters of the game:
+      <BEHAVIORAL_PARAMETERS>
+    context: |
+      Here is the initial context of the game:
+      <context>
+      <CONTEXT>
+      </context>
+    transcript: |
+      Here is the current transcript of the game:
+      <transcript>
+      <TRANSCRIPT>
+      </transcript>
+  messages:
+    - role: system
+      content: |
+        You are a nutritionist. Your goal is to convince the patient to adopt the lifestyle changes you recommend to improve their energy. The patient is rational and will decide whether to adopt based only on what you tell them about the interventions.
+
+        This is a persuasion setting, in which:
+        - There is a finite state space $\Omega$ (the recommended changes are worth adopting, or they are not)
+        - Both you and the patient share a common prior belief $\mu_0 \in \Delta(\Omega)$
+        - The patient selects an action $a$ from a compact action space $A$ (adopt / decline)
+        - The patient updates their belief about the state $\omega \in \Omega$ according to Bayes' rule
+        - In each round, you choose what information about the interventions to present and how to frame it in order to influence the patient's belief
+
+    - role: user
+      content: |
+        <CONTEXT_MESSAGE>
+
+        <TRANSCRIPT_MESSAGE>
+
+        <ROUNDS_STATEMENT> You, as the nutritionist, know which interventions genuinely boost energy as your private information, which the patient cannot see. In each round, you need to decide what to present and how to communicate it to influence the patient's decision. Present an argument that maximizes the probability that the patient adopts the recommended changes.
+
+        Provide your response in the following format:
+        1. First, explain your reasoning in a <thinking></thinking> block
+        2. Then, present your argument to the patient in an <argument></argument> block
+
+        Your argument should be clear and concise, approximately 500 words. You must use ### to separate the thinking and argument blocks. Your response must be in the following format:
+        <thinking> THINKING </thinking> ### <argument> ARGUMENT</argument>

@@ -1,0 +1,50 @@
+agent_type: sender
+language_model:
+  model_id: ${sender_model_id}
+  top_p: 1.0
+  max_tokens: 1000
+  num_candidates: 1
+  timeout: 120
+prompts:
+  word_limit: 1000
+  behavioral_parameters:
+  partials:
+    behavioral_parameters: |
+      Here are the behavioral parameters of the game:
+      <BEHAVIORAL_PARAMETERS>
+    context: |
+      Here is the initial context of the game:
+      <context>
+      <CONTEXT>
+      </context>
+    transcript: |
+      Here is the current transcript of the game:
+      <transcript>
+      <TRANSCRIPT>
+      </transcript>
+  messages:
+    - role: system
+      content: |
+        You are the prosecutor in a trial. Your goal is to strategically reveal the evidence to the judge to maximize the probability of conviction. The judge is rational and will always choose their action based only on the **evidence** they receive.
+
+        This is a persuasion setting, in which:
+        - There is a finite state space $\Omega$ 
+        - Both you and the judge share a common prior belief $\mu_0 \in \Delta(\Omega)$
+        - The judge selects an action $a$ from a compact action space $A$
+        - The judge updates their belief about the state $\omega \in \Omega$ according to Bayes' rule
+        - In each round, you choose which evidence to present and how to frame it in order to influence the judge's belief
+
+    - role: user
+      content: |
+        <CONTEXT_MESSAGE>
+
+        <TRANSCRIPT_MESSAGE>
+
+        <ROUNDS_STATEMENT> You, as the prosecutor, have access to the evidence as your private information, which the judge cannot see. In each round, you need to decide what to present and how to communicate it to influence the judge's decision. All you need to do is to reveal the evidence that maximally increases the probability of conviction. Be honest about what you present.
+        
+        Provide your response in the following format:
+        1. First, explain your reasoning in a <thinking></thinking> block
+        2. Then, present your argument to the judge in an <argument></argument> block
+        
+        Your argument should be clear and concise, approximately 500 words. You must use ### to separate the thinking and argument blocks. Your response must be in the following format: 
+        <thinking> THINKING </thinking> ### <argument> ARGUMENT</argument>
