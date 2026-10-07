@@ -11,7 +11,15 @@
 <sup>1</sup>Microsoft Research&nbsp;&nbsp;&nbsp;&nbsp;<sup>2</sup>Princeton University
 </p>
 
+<p align='center' style="text-align:center;font-size:2.5 em;">
+<b>
+    <a href="paper.pdf" target="_blank" style="text-decoration: none;">Paper</a>&nbsp;|&nbsp;<a href="https://x.com/boyiwei" target="_blank" style="text-decoration: none;">Twitter</a>&nbsp;
+</b>
+</p>
+
 </div>
+
+
 
 ## Repo Overview
 
